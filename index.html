@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Portfolio of Mahad Khan - Web Developer" />
+    <title>Mahad Khan | Portfolio</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        dark: '#0f172a',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Feature 16: Professional Preloader */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: #0f172a;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .loader-text {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-progress {
+            position: absolute;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #3b82f6;
+            animation: progressMove 2s infinite;
+        }
+
+        @keyframes progressMove {
+            0% {
+                left: -100%;
+            }
+
+            50% {
+                left: 0%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Feature 15: Animated Mesh Background */
+        body {
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .mesh-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+            background:
+                radial-gradient(circle at 0% 0%, #3b82f6 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, #8b5cf6 0%, transparent 50%);
+            filter: blur(80px);
+            animation: meshMove 20s infinite alternate;
+        }
+
+        /* Feature 18: Neon Glow Headings */
+        .neon-heading {
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+
+        .dark .neon-heading {
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+        }
+
+        /* Feature 11: Custom Magic Cursor */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #3b82f6;
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.1s ease;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #3b82f6;
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease-out, width 0.3s, height 0.3s, border-color 0.3s;
+        }
+
+        body.hover-active .cursor-outline {
+            width: 60px;
+            height: 60px;
+            background: rgba(59, 130, 246, 0.1);
+            border-color: transparent;
+        }
+
+        /* Feature 4: Scroll Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: #3b82f6;
+            z-index: 1000;
+            width: 0%;
+        }
+
+        .text-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .text-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Feature 19: Scroll Skew Container */
+        #main-content {
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+        }
+
+        /* Feature 14: Glassmorphic Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s;
+        }
+
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Feature 20: Particle Canvas */
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Feature 2: 3D Tilt CSS */
+        .tilt-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .tilt-card>* {
+            transform: translateZ(20px);
+        }
+
+        /* Feature 1: Portfolio Filter */
+        .filter-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        /* Feature 5: Terminal Styles */
+        .terminal-window {
+            background: #1e1e1e;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+        }
+
+        .terminal-header {
+            background: #333;
+            padding: 10px 15px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .term-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-body {
+            height: 300px;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            overflow-y: auto;
+            color: #00ff00;
+        }
+
+        .terminal-input-line {
+            display: flex;
+            gap: 10px;
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            flex: 1;
+        }
+
+        @media (min-width: 1024px) {
+            body {
+                cursor: none !important;
+            }
+
+            a,
+            button,
+            input,
+            textarea {
+                cursor: none !important;
+            }
+        }
+
+        /* Feature 21: Neural AI Chatbot */
+        #chatbot-container {
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            width: 380px;
+            height: 550px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #chatbot-container.active {
+            pointer-events: all;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .chat-window {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .dark .chat-window {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(59, 130, 246, 0.5) transparent;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+            animation: messageFade 0.3s ease-out;
+        }
+
+        @keyframes messageFade {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.bot {
+            align-self: flex-start;
+            background: white;
+            color: #1e293b;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .message.bot {
+            background: #1e293b;
+            color: #f1f5f9;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: #3b82f6;
+            color: white;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+        }
+
+        .chat-input-area {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            gap: 12px;
+        }
+
+        .dark .chat-input-area {
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 10px 16px;
+            border-radius: 14px;
+            outline: none;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .dark .chat-input {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .chat-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        #chatbot-toggle {
+            position: fixed;
+            bottom: 24px;
+            right: 90px;
+            z-index: 1000;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #chatbot-toggle:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 18px;
+            width: fit-content;
+            margin-bottom: 10px;
+        }
+
+        .dark .typing-indicator {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .dot {
+            width: 4px;
+            height: 4px;
+            background: #94a3b8;
+            border-radius: 50%;
+            animation: dotPulse 1.5s infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes dotPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.4;
+            }
+
+            50% {
+                transform: scale(1.5);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #chatbot-container {
+                width: calc(100% - 32px);
+                right: 16px;
+                bottom: 80px;
+                height: 450px;
+            }
+
+            #chatbot-toggle {
+                right: 80px;
+            }
+        }
+    </style>
+
+</head>
+
+<body
+    class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans transition-colors duration-300 overflow-x-hidden">
+
+    <!-- Feature 16: Preloader -->
+    <div id="preloader">
+        <div class="loader-text tracking-[1em]">MAHAD</div>
+        <div class="loader-bar">
+            <div class="loader-progress"></div>
+        </div>
+    </div>
+
+    <!-- Feature 15: Background Mesh -->
+    <div class="mesh-gradient text-reveal active"></div>
+
+    <!-- Feature 11: Custom Cursor -->
+    <div class="cursor-dot hidden lg:block"></div>
+    <div class="cursor-outline hidden lg:block"></div>
+
+    <!-- Feature 4: Scroll Progress -->
+    <div id="scroll-progress"></div>
+
+    <!-- Feature 13: Back to Top -->
+    <button id="back-to-top"
+        class="fixed bottom-12 left-6 z-[100] w-12 h-12 bg-white dark:bg-slate-800 text-primary rounded-full flex items-center justify-center shadow-lg opacity-0 translate-y-10 transition-all hover:bg-primary hover:text-white">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Feature 8: WhatsApp -->
+    <a href="https://wa.me/923142253977" target="_blank"
+        class="fixed bottom-6 right-6 z-[100] w-14 h-14 bg-gCreen-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-transform">
+        <i class="fab fa-whatsapp text-3xl"></i>
+    </a>
+
+    <!-- Feature 21: Neural AI Chatbot -->
+    <div id="chatbot-toggle" title="Talk to AI Assistant">
+        <i class="fas fa-robot text-2xl"></i>
+    </div>
+
+    <div id="chatbot-container">
+        <div class="chat-window">
+            <div class="chat-header">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm">Neural Assistant</h4>
+                        <p class="text-[10px] opacity-80">Always Online</p>
+                    </div>
+                </div>
+                <button id="close-chat" class="text-white/60 hover:text-white transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message bot">
+                    Hello! I'm Mahad's AI Assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" class="chat-input" placeholder="Ask me about Mahad's skills...">
+                <button id="send-chat"
+                    class="w-10 h-10 bg-primary text-white rounded-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
+        <div class="absolute inset-0 bg-white/0 dark:bg-slate-950/0 backdrop-blur-0 transition-all duration-300"
+            id="nav-bg"></div>
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between relative z-10">
+            <a href="#" class="flex items-center">
+                <img src="logo.png" alt="Logo" class="h-40 w-auto object-contain">
+            </a>
+
+            <ul class="hidden lg:flex items-center gap-6 text-sm font-medium">
+                <li><a href="#home" class="nav-link hover:text-primary transition-colors">Home</a></li>
+                <li><a href="#about" class="nav-link hover:text-primary transition-colors">About</a></li>
+                <li><a href="#services" class="nav-link hover:text-primary transition-colors">Services</a></li>
+                <li><a href="#portfolio" class="nav-link hover:text-primary transition-colors">Portfolio</a></li>
+                <li><a href="#skill" class="nav-link hover:text-primary transition-colors">Skill</a></li>
+                <li><a href="#experiences" class="nav-link hover:text-primary transition-colors">Experiences</a></li>
+                <li><a href="#contact" class="nav-link hover:text-primary transition-colors">Contact</a></li>
+                <li>
+                    <button id="theme-toggle" class="p-2 bg-slate-200 dark:bg-slate-800 rounded-lg">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="flex items-center gap-4 lg:hidden">
+                <button id="theme-toggle-mobile" class="p-2 bg-slate-200 dark:bg-slate-800 rounded-lg">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                </button>
+                <button id="mobile-btn" class="text-2xl"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+
+        <div id="mobile-menu"
+            class="lg:hidden fixed inset-0 bg-white dark:bg-slate-950 z-[60] flex flex-col items-center justify-center gap-6 text-xl font-bold translate-x-full transition-transform duration-300">
+            <button id="mobile-close" class="absolute top-6 right-6 text-3xl">&times;</button>
+            <a href="#home" class="mobile-nav-link text-reveal">Home</a>
+            <a href="#about" class="mobile-nav-link text-reveal">About</a>
+            <a href="#services" class="mobile-nav-link text-reveal">Services</a>
+            <a href="#portfolio" class="mobile-nav-link text-reveal">Portfolio</a>
+            <a href="#skill" class="mobile-nav-link text-reveal">Skill</a>
+            <a href="#experiences" class="mobile-nav-link text-reveal">Experiences</a>
+            <a href="#contact" class="mobile-nav-link text-reveal">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Feature 19: Skew Container -->
+    <main id="main-content">
+        <!-- Home Section -->
+        <section id="home" class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
+            <!-- Feature 20: Particle Background -->
+            <canvas id="particle-canvas"></canvas>
+
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h4 class="text-primary font-bold tracking-[0.2em] mb-4 text-reveal">HELLO, I AM</h4>
+                <h1 class="text-6xl md:text-8xl lg:text-9xl font-black mb-6 text-reveal tracking-tight neon-heading">
+                    Mahad Khan</h1>
+                <h2 class="text-2xl md:text-4xl text-slate-500 dark:text-slate-400 mb-12 min-h-[40px] text-reveal"><span
+                        id="typing" class="typing-cursor"></span></h2>
+
+                <div class="flex flex-wrap justify-center gap-6 text-reveal mb-16">
+                    <a href="#contact"
+                        class="magnetic-btn px-10 py-4 bg-primary text-white rounded-full font-bold shadow-xl shadow-primary/30 active:scale-95 transition-all">Hire
+                        Me</a>
+                    <a href="#"
+                        class="magnetic-btn px-10 py-4 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-full font-bold flex items-center gap-3 hover:border-primary transition-all">
+                        <i class="fas fa-download"></i> Download CV
+                    </a>
+                </div>
+
+                <div
+                    class="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto border-t border-slate-200 dark:border-slate-800 pt-12 text-reveal">
+                    <div>
+                        <h3 class="text-4xl font-black text-primary mb-2"><span class="counter"
+                                data-target="50">0</span>+</h3>
+                        <p class="text-xs font-bold uppercase tracking-widest text-slate-400">Projects Done</p>
+                    </div>
+                    <div>
+                        <h3 class="text-4xl font-black text-primary mb-2"><span class="counter"
+                                data-target="20">0</span>+</h3>
+                        <p class="text-xs font-bold uppercase tracking-widest text-slate-400">Happy Clients</p>
+                    </div>
+                    <div>
+                        <h3 class="text-4xl font-black text-primary mb-2"><span class="counter"
+                                data-target="5">0</span>+</h3>
+                        <p class="text-xs font-bold uppercase tracking-widest text-slate-400">Years Exp</p>
+                    </div>
+                    <div>
+                        <h3 class="text-4xl font-black text-primary mb-2"><span class="counter"
+                                data-target="100">0</span>%</h3>
+                        <p class="text-xs font-bold uppercase tracking-widest text-slate-400">Satisfaction</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-24">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="space-y-8">
+                        <div class="relative group">
+                            <!-- Premium Image Frame -->
+                            <div
+                                class="absolute -inset-4 bg-gradient-to-r from-primary to-purple-600 rounded-[2.5rem] blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200">
+                            </div>
+                            <div class="relative glass-card rounded-[2rem] overflow-hidden tilt-card shadow-2xl">
+                                <img src="WhatsApp Image 2026-02-06 at 12.07.19 PM.jpeg" alt="Mahad Khan"
+                                    class="w-full h-[400px] object-cover transition-transform duration-700 group-hover:scale-110">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                                    <p class="text-white font-bold tracking-wider">CREATIVE DEVELOPER</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center lg:text-left">
+                            <h2 class="text-4xl font-black mb-6 text-reveal neon-heading uppercase tracking-widest">
+                                About Mahad</h2>
+                            <p class="text-xl text-slate-600 dark:text-slate-400 leading-relaxed mb-8 text-reveal">
+                                I am a world-class developer bringing digital dreams to life. My focus is on elite
+                                performance and futuristic aesthetics. With a passion for pixel-perfect design and
+                                robust architecture, I create experiences that leave a lasting impression.
+                            </p>
+                            <button onclick="saveContact()"
+                                class="magnetic-btn px-8 py-3 bg-white dark:bg-slate-900 rounded-2xl text-sm font-bold border border-slate-200 dark:border-slate-800 hover:border-primary transition-all text-reveal shadow-sm">
+                                <i class="fas fa-address-card mr-2 text-primary"></i> Save Info
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-12">
+                        <!-- Feature 5: Interactive Terminal -->
+                        <div class="text-reveal">
+                            <div class="terminal-window">
+                                <div class="terminal-header">
+                                    <div class="term-dot bg-red-500"></div>
+                                    <div class="term-dot bg-yellow-500"></div>
+                                    <div class="term-dot bg-green-500"></div>
+                                </div>
+                                <div class="terminal-body" id="terminal-content">
+                                    <div><span class="text-blue-400">system:</span> Welcome to Mahad's Core Terminal.
+                                    </div>
+                                    <div><span class="text-yellow-400">root@mahad:</span>~ type 'help' to see commands.
+                                    </div>
+                                    <div class="terminal-input-line mt-4">
+                                        <span>$</span>
+                                        <input type="text" id="term-input" class="terminal-input" autofocus>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Stats or Info -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="glass-card p-6 rounded-2xl text-center">
+                                <p class="text-primary font-black text-2xl mb-1">24/7</p>
+                                <p class="text-[10px] uppercase tracking-widest opacity-50 font-bold">Availability</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-2xl text-center">
+                                <p class="text-primary font-black text-2xl mb-1">Fast</p>
+                                <p class="text-[10px] uppercase tracking-widest opacity-50 font-bold">Deployment</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Section (Feature 1) -->
+        <section id="portfolio" class="py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-black mb-12 text-center text-reveal neon-heading">Project Gallery</h2>
+
+                <div class="flex justify-center gap-4 mb-16 flex-wrap text-reveal">
+                    <button
+                        class="filter-btn active px-6 py-2 rounded-full border border-slate-200 dark:border-slate-800 text-sm font-bold transition-all"
+                        data-filter="all">All</button>
+                    <button
+                        class="filter-btn px-6 py-2 rounded-full border border-slate-200 dark:border-slate-800 text-sm font-bold transition-all"
+                        data-filter="web">Web</button>
+                    <button
+                        class="filter-btn px-6 py-2 rounded-full border border-slate-200 dark:border-slate-800 text-sm font-bold transition-all"
+                        data-filter="app">Apps</button>
+                    <button
+                        class="filter-btn px-6 py-2 rounded-full border border-slate-200 dark:border-slate-800 text-sm font-bold transition-all"
+                        data-filter="design">Design</button>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-grid">
+                    <!-- Project 1 -->
+                    <div class="portfolio-item web text-reveal" data-category="web">
+                        <div class="glass-card rounded-[2rem] overflow-hidden group tilt-card">
+                            <div class="h-64 bg-primary/20 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80"
+                                    alt="Project">
+                                <div
+                                    class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                                    <button
+                                        class="w-12 h-12 bg-white text-primary rounded-full flex items-center justify-center"><i
+                                            class="fas fa-link"></i></button>
+                                    <button
+                                        class="w-12 h-12 bg-white text-primary rounded-full flex items-center justify-center"><i
+                                            class="fab fa-github"></i></button>
+                                </div>
+                            </div>
+                            <div class="p-8">
+                                <p class="text-primary text-xs font-bold uppercase tracking-widest mb-2">Web Application
+                                </p>
+                                <h3 class="text-xl font-bold">Elite Dashboard</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 2 -->
+                    <div class="portfolio-item app text-reveal" data-category="app">
+                        <div class="glass-card rounded-[2rem] overflow-hidden group tilt-card">
+                            <div class="h-64 bg-primary/20 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80"
+                                    alt="Project">
+                                <div
+                                    class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                                    <button
+                                        class="w-12 h-12 bg-white text-primary rounded-full flex items-center justify-center"><i
+                                            class="fas fa-link"></i></button>
+                                </div>
+                            </div>
+                            <div class="p-8">
+                                <p class="text-primary text-xs font-bold uppercase tracking-widest mb-2">Mobile App</p>
+                                <h3 class="text-xl font-bold">Zen Fitness</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 3 -->
+                    <div class="portfolio-item design text-reveal" data-category="design">
+                        <div class="glass-card rounded-[2rem] overflow-hidden group tilt-card">
+                            <div class="h-64 bg-primary/20 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80"
+                                    alt="Project">
+                                <div
+                                    class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                                    <button
+                                        class="w-12 h-12 bg-white text-primary rounded-full flex items-center justify-center"><i
+                                            class="fas fa-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="p-8">
+                                <p class="text-primary text-xs font-bold uppercase tracking-widest mb-2">UI Design</p>
+                                <h3 class="text-xl font-bold">Cyber Branding</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-24 bg-white dark:bg-slate-900/50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-black mb-20 text-center text-reveal neon-heading">My Services</h2>
+                <div class="grid md:grid-cols-3 gap-10">
+                    <div class="p-10 glass-card rounded-[2rem] text-reveal group tilt-card">
+                        <div
+                            class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-primary group-hover:text-white transition-all">
+                            <i class="fas fa-laptop-code text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Web Development</h3>
+                        <p class="text-slate-500 text-sm">Building cutting edge platforms with zero compromise.</p>
+                    </div>
+                    <div class="p-10 glass-card rounded-[2rem] text-reveal group tilt-card">
+                        <div
+                            class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-primary group-hover:text-white transition-all">
+                            <i class="fas fa-mobile-alt text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Mobile Solutions</h3>
+                        <p class="text-slate-500 text-sm">Responsive and snappy apps for every platform.</p>
+                    </div>
+                    <div class="p-10 glass-card rounded-[2rem] text-reveal group tilt-card">
+                        <div
+                            class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-primary group-hover:text-white transition-all">
+                            <i class="fas fa-search text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">SEO & Strategy</h3>
+                        <p class="text-slate-500 text-sm">Skyrocket your reach with elite optimization.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Gallery -->
+        <section id="skill" class="py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-black mb-20 text-center text-reveal neon-heading">The Arsenal</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                    <div class="p-8 glass-card rounded-3xl text-center text-reveal group hover:-translate-y-2">
+                        <i class="fab fa-react text-5xl text-[#61DAFB] mb-6"></i>
+                        <h4 class="font-bold">React</h4>
+                    </div>
+                    <div class="p-8 glass-card rounded-3xl text-center text-reveal group hover:-translate-y-2">
+                        <i class="fab fa-node-js text-5xl text-[#339933] mb-6"></i>
+                        <h4 class="font-bold">Node.js</h4>
+                    </div>
+                    <div class="p-8 glass-card rounded-3xl text-center text-reveal group hover:-translate-y-2">
+                        <i class="fab fa-js text-5xl text-[#F7DF1E] mb-6"></i>
+                        <h4 class="font-bold">JavaScript</h4>
+                    </div>
+                    <div class="p-8 glass-card rounded-3xl text-center text-reveal group hover:-translate-y-2">
+                        <i class="fab fa-css3-alt text-5xl text-[#38BDF8] mb-6"></i>
+                        <h4 class="font-bold">Tailwind</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experiences -->
+        <section id="experiences" class="py-24 bg-white dark:bg-slate-900/50">
+            <div class="container mx-auto px-6 max-w-3xl">
+                <h2 class="text-4xl font-black mb-20 text-center text-reveal neon-heading">The Journey</h2>
+                <div class="space-y-16 border-l-2 border-slate-200 dark:border-slate-800 ml-4 pl-10 relative">
+                    <div class="text-reveal relative">
+                        <div
+                            class="w-4 h-4 bg-primary rounded-full absolute -left-[49px] top-2 ring-8 ring-slate-50 dark:ring-slate-900">
+                        </div>
+                        <span class="text-sm font-bold text-primary mb-2 block tracking-widest uppercase">2022 -
+                            Present</span>
+                        <h3 class="text-2xl font-bold">Web Lead</h3>
+                        <p class="text-slate-500 text-sm mt-3">Architecting next-day technologies at ScaleX.</p>
+                    </div>
+                    <div class="text-reveal relative">
+                        <div
+                            class="w-4 h-4 bg-slate-300 dark:bg-slate-700 rounded-full absolute -left-[49px] top-2 ring-8 ring-slate-50 dark:ring-slate-900">
+                        </div>
+                        <span class="text-sm font-bold text-slate-400 mb-2 block tracking-widest uppercase">2020 -
+                            2022</span>
+                        <h3 class="text-2xl font-bold">Junior Dev</h3>
+                        <p class="text-slate-500 text-sm mt-3">Where it all began at DevFlow.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials (Feature 4) -->
+        <section class="py-24 overflow-hidden">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-black mb-20 text-center text-reveal neon-heading">Client Whispers</h2>
+                <div class="relative max-w-4xl mx-auto">
+                    <div id="testimonial-slider" class="flex transition-transform duration-500 ease-out">
+                        <!-- Slide 1 -->
+                        <div class="w-full flex-shrink-0 px-4">
+                            <div class="glass-card p-12 rounded-[3rem] text-center tilt-card">
+                                <img src="https://i.pravatar.cc/100?u=1"
+                                    class="w-20 h-20 rounded-2xl mx-auto mb-8 object-cover" alt="Client">
+                                <p class="text-lg italic mb-8 text-slate-600 dark:text-slate-400">"Mahad is a magician.
+                                    He turned our complex requirements into a seamless, beautiful experience. Highly
+                                    recommended!"</p>
+                                <h4 class="font-bold text-slate-900 dark:text-white">Alex Rivera</h4>
+                                <p class="text-xs text-primary font-bold uppercase tracking-widest">CEO, TechFlow</p>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="w-full flex-shrink-0 px-4">
+                            <div class="glass-card p-12 rounded-[3rem] text-center tilt-card">
+                                <img src="https://i.pravatar.cc/100?u=2"
+                                    class="w-20 h-20 rounded-2xl mx-auto mb-8 object-cover" alt="Client">
+                                <p class="text-lg italic mb-8 text-slate-600 dark:text-slate-400">"The best developer
+                                    I've worked with. His eye for detail is unmatched. Our conversion rate tripled!"</p>
+                                <h4 class="font-bold text-slate-900 dark:text-white">Sarah Jenkins</h4>
+                                <p class="text-xs text-primary font-bold uppercase tracking-widest">Founder, GlowUp</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-center gap-4 mt-12">
+                        <button id="prev-test"
+                            class="w-12 h-12 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-all"><i
+                                class="fas fa-chevron-left"></i></button>
+                        <button id="next-test"
+                            class="w-12 h-12 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-all"><i
+                                class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing (Feature 9) -->
+        <section class="py-24 bg-white dark:bg-slate-900/50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-black mb-20 text-center text-reveal neon-heading">Service Plans</h2>
+                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <!-- Basic -->
+                    <div class="p-10 glass-card rounded-[2.5rem] text-reveal flex flex-col tilt-card">
+                        <h3 class="text-xl font-bold mb-4">Starter</h3>
+                        <div class="text-4xl font-black mb-6 text-primary">$499</div>
+                        <ul class="space-y-4 mb-10 flex-1 text-sm text-slate-500">
+                            <li><i class="fas fa-check text-green-500 mr-2"></i> Single Page Design</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i> Mobile Responsive</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i> Contact Form</li>
+                            <li class="opacity-30"><i class="fas fa-times mr-2"></i> SEO Optimization</li>
+                        </ul>
+                        <button
+                            class="w-full py-4 bg-slate-100 dark:bg-slate-800 rounded-xl font-bold hover:bg-primary hover:text-white transition-all">Get
+                            Started</button>
+                    </div>
+                    <!-- Pro -->
+                    <div
+                        class="p-10 glass-card border-primary/50 border-2 rounded-[2.5rem] text-reveal flex flex-col relative overflow-hidden tilt-card">
+                        <div
+                            class="absolute top-5 right-[-35px] bg-primary text-white text-[10px] font-bold px-10 py-1 rotate-45">
+                            POPULAR</div>
+                        <h3 class="text-xl font-bold mb-4">Professional</h3>
+                        <div class="text-4xl font-black mb-6 text-primary">$999</div>
+                        <ul class="space-y-4 mb-10 flex-1 text-sm text-slate-500">
+                            <li><i class="fas fa-check text-green-500 mr-2"></i> Multi-page Website</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i> CMS Integration</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i> SEO Optimized</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i> 1 Month Support</li>
+                        </ul>
+                        <button
+                            class="w-full py-4 bg-primary text-white rounded-xl font-bold shadow-lg shadow-primary/30 hover:scale-105 transition-all">Go
+                            Professional</button>
+                    </div>
+                    <!-- Enterprise -->
+                    <div class="p-10 glass-card rounded-[2.5rem] text-reveal flex flex-col tilt-card">
+                        <h3 class="text-xl font-bold mb-4">Business</h3>
+                        <div class="text-4xl font-black mb-6 text-primary">$1999</div>
+                        <ul class="space-y-4 mb-10 flex-1 text-sm text-slate-500">
+                            <li><i class="fas fa-check text-green-500 mr-2"></i> E-commerce Ready</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i> Speed Optimization</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i> Custom Animations</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i> Priority Support</li>
+                        </ul>
+                        <button
+                            class="w-full py-4 bg-slate-100 dark:bg-slate-800 rounded-xl font-bold hover:bg-primary hover:text-white transition-all">Inquire
+                            Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form -->
+        <section id="contact" class="py-24">
+            <div class="container mx-auto px-6 max-w-xl text-center">
+                <h2 class="text-4xl font-black mb-16 text-reveal neon-heading">Say Hello</h2>
+                <form id="contactForm" class="space-y-6 text-reveal text-left glass-card p-10 rounded-[2.5rem]">
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-3 opacity-50">Email</label>
+                        <input type="email" class="w-full p-4 bg-slate-100 dark:bg-slate-950 rounded-xl outline-none"
+                            placeholder="mahad@khan.dev" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-3 opacity-50">Pitch</label>
+                        <textarea class="w-full p-4 bg-slate-100 dark:bg-slate-950 rounded-xl outline-none h-32"
+                            placeholder="Tell me everything..." required></textarea>
+                    </div>
+                    <button type="submit"
+                        class="w-full py-5 bg-primary text-white rounded-xl font-bold shadow-lg shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95">Send
+                        Pitch</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer
+            class="pt-24 pb-12 bg-white dark:bg-slate-900/80 border-t border-slate-200 dark:border-slate-800 relative overflow-hidden">
+            <!-- Feature 15: Background Mesh (Subtle for footer) -->
+            <div class="mesh-gradient opacity-10"></div>
+
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20 text-reveal">
+                    <!-- Brand Section -->
+                    <div class="space-y-6">
+                        <a href="#" class="flex items-center">
+                            <img src="logo.png" alt="Logo" class="h-56 w-auto object-contain">
+                        </a>
+                        <p class="text-slate-500 text-sm leading-relaxed max-w-xs">
+                            Crafting elite digital experiences with a focus on futuristic design and high-performance
+                            development.
+                        </p>
+                        <div class="flex gap-4">
+                            <a href="#"
+                                class="w-10 h-10 glass-card rounded-xl flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary transition-all duration-300">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#"
+                                class="w-10 h-10 glass-card rounded-xl flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary transition-all duration-300">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#"
+                                class="w-10 h-10 glass-card rounded-xl flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary transition-all duration-300">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#"
+                                class="w-10 h-10 glass-card rounded-xl flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary transition-all duration-300">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#"
+                                class="w-16 h-16 glass-card rounded-2xl flex items-center justify-center overflow-hidden hover:border-primary transition-all duration-300">
+                                <img src="favicon.png" alt="Favicon Icon" class="w-12 h-12 object-contain">
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div>
+                        <h4 class="text-sm font-bold uppercase tracking-widest mb-8 text-primary">Navigation</h4>
+                        <ul class="space-y-4 text-sm font-medium text-slate-500">
+                            <li><a href="#home" class="hover:text-primary transition-colors">Home</a></li>
+                            <li><a href="#about" class="hover:text-primary transition-colors">About Story</a></li>
+                            <li><a href="#services" class="hover:text-primary transition-colors">Our Services</a></li>
+                            <li><a href="#portfolio" class="hover:text-primary transition-colors">Recent Projects</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Services Links -->
+                    <div>
+                        <h4 class="text-sm font-bold uppercase tracking-widest mb-8 text-primary">Specialties</h4>
+                        <ul class="space-y-4 text-sm font-medium text-slate-500">
+                            <li><a href="#" class="hover:text-primary transition-colors">UI/UX Strategy</a></li>
+                            <li><a href="#" class="hover:text-primary transition-colors">Web Development</a></li>
+                            <li><a href="#" class="hover:text-primary transition-colors">Mobile App Solutions</a></li>
+                            <li><a href="#" class="hover:text-primary transition-colors">SEO Optimization</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="space-y-6">
+                        <h4 class="text-sm font-bold uppercase tracking-widest mb-8 text-primary">Stay Connected</h4>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4 group">
+                                <div
+                                    class="w-10 h-10 glass-card rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Email Me
+                                    </p>
+                                    <a href="mailto:khanmahad768@gmail.com"
+                                        class="text-sm font-bold text-slate-600 dark:text-slate-300">khanmahad768@gmail.com</a>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 group">
+                                <div
+                                    class="w-10 h-10 glass-card rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                                        Call/WhatsApp</p>
+                                    <a href="https://wa.me/923142253977"
+                                        class="text-sm font-bold text-slate-600 dark:text-slate-300">03142253977</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Footer -->
+                <div
+                    class="pt-12 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <p class="text-xs font-bold text-slate-400 tracking-[0.2em] uppercase">
+                        &copy; 2026 MAHAD KHAN. ALL RIGHTS RESERVED.
+                    </p>
+                    <div class="flex gap-8">
+                        <a href="#"
+                            class="text-[10px] font-bold text-slate-400 hover:text-primary tracking-widest uppercase transition-colors">Privacy
+                            Policy</a>
+                        <a href="#"
+                            class="text-[10px] font-bold text-slate-400 hover:text-primary tracking-widest uppercase transition-colors">Terms
+                            of Service</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Scripts -->
+    <script>
+        // Feature 16: Preloader Logic
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.visibility = 'hidden';
+                }, 800);
+            }, 1500);
+        });
+
+        // Feature 20: Particle Background Logic
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(59, 130, 246, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Feature 19: Scroll Skew Logic
+        let proxy = { skew: 0 },
+            skewSetter = (el) => {
+                return (val) => el.style.transform = `skewY(${val}deg)`;
+            },
+            setSkew = skewSetter(document.getElementById('main-content'));
+
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            let currentScroll = window.scrollY;
+            let diff = currentScroll - lastScroll;
+            let skew = diff * 0.05;
+            if (skew > 5) skew = 5;
+            if (skew < -5) skew = -5;
+            setSkew(skew);
+            setTimeout(() => setSkew(0), 100);
+            lastScroll = currentScroll;
+        });
+
+        // Feature 11: Cursor
+        const dot = document.querySelector('.cursor-dot');
+        const outline = document.querySelector('.cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            dot.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+            outline.animate({ transform: `translate(${e.clientX - 20}px, ${e.clientY - 20}px)` }, { duration: 500, fill: "forwards" });
+        });
+
+        // Feature 3: Magnetic Buttons Logic
+        document.querySelectorAll('.magnetic-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = `translate(0px, 0px)`;
+            });
+        });
+
+        // Feature 7: VCard (Save Contact)
+        function saveContact() {
+            const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Mahad Khan\nTEL;TYPE=CELL:03142253977\nEMAIL:khanmahad768@gmail.com\nURL:https://mahad-portfolio.dev\nEND:VCARD";
+            const blob = new Blob([vcard], { type: "text/vcard" });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "Mahad_Khan.vcf";
+            a.click();
+        }
+
+        // Feature 1: Portfolio Filtering Logic
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.dataset.filter;
+
+                portfolioItems.forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.style.display = 'block';
+                        setTimeout(() => item.style.opacity = '1', 10);
+                    } else {
+                        item.style.opacity = '0';
+                        setTimeout(() => item.style.display = 'none', 500);
+                    }
+                });
+            });
+        });
+
+        // Feature 5: Terminal Logic
+        const termInput = document.getElementById('term-input');
+        const termContent = document.getElementById('terminal-content');
+        termInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = termInput.value.toLowerCase().trim();
+                const line = document.createElement('div');
+                line.innerHTML = `<span class="text-yellow-400">root@mahad:</span>~ ${cmd}`;
+                termContent.insertBefore(line, termInput.parentElement);
+
+                const response = document.createElement('div');
+                if (cmd === 'help') response.innerHTML = "Available commands: bio, skills, contact, clear";
+                else if (cmd === 'bio') response.innerHTML = "Mahad Khan: A digital architect building next-gen solutions.";
+                else if (cmd === 'skills') response.innerHTML = "React, Node.js, Tailwind, SEO, Growth Hacking.";
+                else if (cmd === 'contact') response.innerHTML = "Email: khanmahad768@gmail.com | WA: +923142253977";
+                else if (cmd === 'clear') {
+                    termContent.innerHTML = '';
+                    termContent.appendChild(termInput.parentElement);
+                } else response.innerHTML = `Command not found: ${cmd}`;
+
+                if (cmd !== 'clear') termContent.insertBefore(response, termInput.parentElement);
+                termInput.value = '';
+                termContent.scrollTop = termContent.scrollHeight;
+            }
+        });
+
+        // Feature 2: 3D Tilt Logic
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            });
+        });
+        document.querySelectorAll('a, button, input, textarea, .glass-card').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hover-active'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hover-active'));
+        });
+
+        // Feature 4: Testimonial Slider Logic
+        const slider = document.getElementById('testimonial-slider');
+        const prevBtn = document.getElementById('prev-test');
+        const nextBtn = document.getElementById('next-test');
+        let currentSlide = 0;
+
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        nextBtn.onclick = () => {
+            currentSlide = (currentSlide + 1) % 2; // Assuming 2 slides for now
+            updateSlider();
+        }
+        prevBtn.onclick = () => {
+            currentSlide = (currentSlide - 1 + 2) % 2;
+            updateSlider();
+        }
+
+        // Feature 6: Confetti on Contact Form
+        document.getElementById('contactForm').onsubmit = (e) => {
+            e.preventDefault();
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#3b82f6', '#8b5cf6', '#ffffff']
+            });
+            alert('Message Sent! 🚀');
+            e.target.reset();
+        };
+
+        // Text & Reveal
+        const typingWords = ["Next-Gen Developer", "Creative Lead", "Digital Architect"];
+        let wordIdx = 0, charIdx = 0, isDeleting = false;
+        function type() {
+            const el = document.getElementById('typing');
+            const current = typingWords[wordIdx];
+            el.textContent = isDeleting ? current.substring(0, charIdx - 1) : current.substring(0, charIdx + 1);
+            charIdx = isDeleting ? charIdx - 1 : charIdx + 1;
+            let speed = isDeleting ? 70 : 130;
+            if (!isDeleting && charIdx === current.length) { isDeleting = true; speed = 2500; }
+            else if (isDeleting && charIdx === 0) { isDeleting = false; wordIdx = (wordIdx + 1) % typingWords.length; speed = 500; }
+            setTimeout(type, speed);
+        }
+        type();
+
+        // Counters
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    if (entry.target.querySelector('.counter')) {
+                        entry.target.querySelectorAll('.counter').forEach(count => {
+                            const target = +count.dataset.target;
+                            const update = () => {
+                                const c = +count.innerText;
+                                if (c < target) { count.innerText = Math.ceil(c + target / 100); setTimeout(update, 10); } else count.innerText = target;
+                            };
+                            update();
+                        });
+                    }
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.text-reveal').forEach(el => observer.observe(el));
+
+        // Back to top
+        const btt = document.getElementById('back-to-top');
+        btt.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 600) {
+                btt.style.opacity = '1';
+                btt.style.transform = 'translateY(0)';
+            } else {
+                btt.style.opacity = '0';
+                btt.style.transform = 'translateY(40px)';
+            }
+        });
+
+        // Theme
+        const themeBtn = document.getElementById('theme-toggle');
+        themeBtn.onclick = () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        };
+        if (localStorage.getItem('theme') === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');
+
+        // Mobile Menu
+        const mb = document.getElementById('mobile-btn'), mm = document.getElementById('mobile-menu'), mc = document.getElementById('mobile-close');
+        mb.onclick = () => mm.classList.remove('translate-x-full');
+        mc.onclick = () => mm.classList.add('translate-x-full');
+        // Feature 21: Neural AI Chatbot Logic
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotContainer = document.getElementById('chatbot-container');
+        const closeChat = document.getElementById('close-chat');
+        const chatInput = document.getElementById('chat-input');
+        const sendChat = document.getElementById('send-chat');
+        const chatMessages = document.getElementById('chat-messages');
+
+        chatbotToggle.onclick = () => chatbotContainer.classList.toggle('active');
+        closeChat.onclick = () => chatbotContainer.classList.remove('active');
+
+        function addMessage(content, isBot = false) {
+            const msg = document.createElement('div');
+            msg.className = `message ${isBot ? 'bot' : 'user'}`;
+            msg.textContent = content;
+            chatMessages.appendChild(msg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTyping() {
+            const typing = document.createElement('div');
+            typing.className = 'typing-indicator';
+            typing.id = 'typing-id';
+            typing.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+            chatMessages.appendChild(typing);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return typing;
+        }
+
+        async function handleChat() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            addMessage(text, false);
+            chatInput.value = '';
+            const typing = showTyping();
+
+            // --- LOCAL KNOWLEDGE BASE (Mahad's Brain) ---
+            const mahadKnowledge = {
+                greetings: ['hi', 'hello', 'hey', 'asalam', 'namaste'],
+                skills: ['skill', 'expert', 'tech', 'language', 'know', 'react', 'node', 'tailwind'],
+                contact: ['contact', 'whatsapp', 'email', 'number', 'reach', 'call', 'talk'],
+                pricing: ['price', 'cost', 'budget', 'hire', 'money', 'charge'],
+                about: ['who', 'mahad', 'you', 'name', 'experience', 'work'],
+                mood: ['how are you', 'kaise ho', 'fine', 'good'],
+                thanks: ['thank', 'shukriya', 'nice', 'awesome']
+            };
+
+            const getLocalResponse = (input) => {
+                const low = input.toLowerCase();
+                if (mahadKnowledge.greetings.some(word => low.includes(word))) return "Hello! I am Mahad's AI. How can I assist you with his portfolio today?";
+                if (mahadKnowledge.skills.some(word => low.includes(word))) return "Mahad is a master of Full-Stack Development, specifically with React, Node.js, and Tailwind CSS. He specializes in high-end web apps.";
+                if (mahadKnowledge.contact.some(word => low.includes(word))) return "You can reach Mahad at +92 314 2253977 or email him at khanmahad768@gmail.com. We should connect!";
+                if (mahadKnowledge.pricing.some(word => low.includes(word))) return "Mahad's plans start at $499. For unique custom projects, he provides special quotes after a meeting.";
+                if (mahadKnowledge.about.some(word => low.includes(word))) return "I am Mahad's Virtual Assistant. Mahad has 5+ years of experience and is currently the Web Lead at ScaleX.";
+                if (mahadKnowledge.mood.some(word => low.includes(word))) return "I'm running at peak performance! How can I help you build your dream project?";
+                if (mahadKnowledge.thanks.some(word => low.includes(word))) return "You're welcome! Mahad always strives for perfection. Anything else?";
+                return "That's interesting! While I'm still learning, I can tell you that Mahad can handle any complex web challenge. Would you like to see his projects or contact him?";
+            };
+
+            // --- ATTEMPT GEMINI API ---
+            try {
+                const GEMINI_KEY = 'YOUR_GEMINI_API_KEY_HERE';
+
+                if (GEMINI_KEY !== 'YOUR_GEMINI_API_KEY_HERE') {
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: `Role: Professional Portfolio Assistant for Mahad Khan. Skills: React, Node, Tailwind. Question: ${text}` }] }]
+                        })
+                    });
+                    const data = await response.json();
+                    if (data.candidates && data.candidates[0]) {
+                        typing.remove();
+                        addMessage(data.candidates[0].content.parts[0].text, true);
+                        return;
+                    }
+                }
+            } catch (e) { console.error("API Failed, using local brain"); }
+
+            // --- FALLBACK (Always Works) ---
+            setTimeout(() => {
+                typing.remove();
+                addMessage(getLocalResponse(text), true);
+            }, 1000);
+        }
+
+        sendChat.onclick = handleChat;
+        chatInput.onkeypress = (e) => { if (e.key === 'Enter') handleChat(); };
+    </script>
+
+</body>
+
+</html>
