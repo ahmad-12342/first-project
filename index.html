@@ -192,11 +192,6 @@
             transform: translateY(0);
         }
 
-        /* Feature 19: Scroll Skew Container */
-        #main-content {
-            transition: transform 0.1s ease-out;
-            will-change: transform;
-        }
 
         /* Feature 14: Glassmorphic Cards */
         .glass-card {
@@ -1223,24 +1218,6 @@
         }
         animateParticles();
 
-        // Feature 19: Scroll Skew Logic
-        let proxy = { skew: 0 },
-            skewSetter = (el) => {
-                return (val) => el.style.transform = `skewY(${val}deg)`;
-            },
-            setSkew = skewSetter(document.getElementById('main-content'));
-
-        let lastScroll = 0;
-        window.addEventListener('scroll', () => {
-            let currentScroll = window.scrollY;
-            let diff = currentScroll - lastScroll;
-            let skew = diff * 0.05;
-            if (skew > 5) skew = 5;
-            if (skew < -5) skew = -5;
-            setSkew(skew);
-            setTimeout(() => setSkew(0), 100);
-            lastScroll = currentScroll;
-        });
 
         // Feature 11: Cursor
         const dot = document.querySelector('.cursor-dot');
