@@ -510,14 +510,11 @@
     </style>
 
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
             apiKey: "AIzaSyDy32moDuvKHvYekhXoA_RZALEtA5kBLS0",
             authDomain: "mahad-web.firebaseapp.com",
@@ -528,9 +525,13 @@
             measurementId: "G-SW6D2PMSGT"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Export for use in other scripts
+        window.firebaseApp = { auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, doc, setDoc, addDoc, collection, serverTimestamp };
     </script>
 </head>
 
@@ -603,6 +604,71 @@
         </div>
     </div>
 
+    <!-- Auth Modal -->
+    <div id="auth-modal"
+        class="fixed inset-0 z-[200] flex items-center justify-center p-6 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="auth-overlay"></div>
+        <div class="glass-card w-full max-w-md p-10 rounded-[2.5rem] relative z-20 scale-95 transition-all duration-300"
+            id="auth-card">
+            <button id="close-auth"
+                class="absolute top-6 right-6 text-2xl opacity-50 hover:opacity-100">&times;</button>
+            <div id="auth-tabs" class="flex gap-4 mb-8">
+                <button id="tab-login"
+                    class="flex-1 py-2 font-bold border-b-2 border-primary text-primary transition-all">Login</button>
+                <button id="tab-signup"
+                    class="flex-1 py-2 font-bold border-b-2 border-transparent text-slate-400 transition-all">Sign
+                    Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest mb-2 opacity-50">Email</label>
+                    <input type="email" id="login-email"
+                        class="w-full p-4 bg-slate-100 dark:bg-slate-900 rounded-xl outline-none"
+                        placeholder="email@example.com" required>
+                </div>
+                <div>
+                    <label
+                        class="block text-[10px] font-bold uppercase tracking-widest mb-2 opacity-50">Password</label>
+                    <input type="password" id="login-password"
+                        class="w-full p-4 bg-slate-100 dark:bg-slate-900 rounded-xl outline-none" placeholder="••••••••"
+                        required>
+                </div>
+                <button type="submit"
+                    class="w-full py-4 bg-primary text-white rounded-xl font-bold shadow-lg shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all">Log
+                    In</button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signup-form" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest mb-2 opacity-50">Full
+                        Name</label>
+                    <input type="text" id="signup-name"
+                        class="w-full p-4 bg-slate-100 dark:bg-slate-900 rounded-xl outline-none"
+                        placeholder="Mahad Khan" required>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest mb-2 opacity-50">Email</label>
+                    <input type="email" id="signup-email"
+                        class="w-full p-4 bg-slate-100 dark:bg-slate-900 rounded-xl outline-none"
+                        placeholder="email@example.com" required>
+                </div>
+                <div>
+                    <label
+                        class="block text-[10px] font-bold uppercase tracking-widest mb-2 opacity-50">Password</label>
+                    <input type="password" id="signup-password"
+                        class="w-full p-4 bg-slate-100 dark:bg-slate-900 rounded-xl outline-none" placeholder="••••••••"
+                        required>
+                </div>
+                <button type="submit"
+                    class="w-full py-4 bg-primary text-white rounded-xl font-bold shadow-lg shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all">Sign
+                    Up</button>
+            </form>
+        </div>
+    </div>
+
     <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
         <div class="absolute inset-0 bg-white/0 dark:bg-slate-950/0 backdrop-blur-0 transition-all duration-300"
             id="nav-bg"></div>
@@ -619,6 +685,16 @@
                 <li><a href="#skill" class="nav-link hover:text-primary transition-colors">Skill</a></li>
                 <li><a href="#experiences" class="nav-link hover:text-primary transition-colors">Experiences</a></li>
                 <li><a href="#contact" class="nav-link hover:text-primary transition-colors">Contact</a></li>
+                <li>
+                    <button id="auth-btn"
+                        class="px-5 py-2 bg-primary text-white rounded-xl font-bold hover:scale-105 transition-all">Login</button>
+                </li>
+                <li id="user-profile" class="hidden flex items-center gap-3">
+                    <span id="user-name" class="text-xs font-bold text-slate-500"></span>
+                    <button id="logout-btn"
+                        class="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-all"><i
+                            class="fas fa-sign-out-alt"></i></button>
+                </li>
                 <li>
                     <button id="theme-toggle" class="p-2 bg-slate-200 dark:bg-slate-800 rounded-lg">
                         <i class="fas fa-moon dark:hidden"></i>
@@ -1526,6 +1602,151 @@
 
         sendChat.onclick = handleChat;
         chatInput.onkeypress = (e) => { if (e.key === 'Enter') handleChat(); };
+
+        // --- AUTH & FIRESTORE LOGIC ---
+        const { auth: fAuth, db: fDb, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, doc, setDoc, addDoc, collection, serverTimestamp } = window.firebaseApp;
+
+        const authModal = document.getElementById('auth-modal');
+        const authCard = document.getElementById('auth-card');
+        const authBtn = document.getElementById('auth-btn');
+        const closeAuth = document.getElementById('close-auth');
+        const authOverlay = document.getElementById('auth-overlay');
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const tabLogin = document.getElementById('tab-login');
+        const tabSignup = document.getElementById('tab-signup');
+        const userProfile = document.getElementById('user-profile');
+        const userNameDisplay = document.getElementById('user-name');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // Toggle Modal
+        const toggleAuthModal = (show) => {
+            if (show) {
+                authModal.classList.remove('pointer-events-none');
+                authModal.classList.add('opacity-100');
+                authCard.classList.remove('scale-95');
+                authCard.classList.add('scale-100');
+            } else {
+                authModal.classList.add('pointer-events-none');
+                authModal.classList.remove('opacity-100');
+                authCard.classList.add('scale-95');
+                authCard.classList.remove('scale-100');
+            }
+        };
+
+        authBtn.onclick = () => toggleAuthModal(true);
+        closeAuth.onclick = () => toggleAuthModal(false);
+        authOverlay.onclick = () => toggleAuthModal(false);
+
+        // Tab Switching
+        tabLogin.onclick = () => {
+            loginForm.classList.remove('hidden');
+            signupForm.classList.add('hidden');
+            tabLogin.classList.add('border-primary', 'text-primary');
+            tabLogin.classList.remove('border-transparent', 'text-slate-400');
+            tabSignup.classList.remove('border-primary', 'text-primary');
+            tabSignup.classList.add('border-transparent', 'text-slate-400');
+        };
+
+        tabSignup.onclick = () => {
+            signupForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+            tabSignup.classList.add('border-primary', 'text-primary');
+            tabSignup.classList.remove('border-transparent', 'text-slate-400');
+            tabLogin.classList.remove('border-primary', 'text-primary');
+            tabLogin.classList.add('border-transparent', 'text-slate-400');
+        };
+
+        // Signup Logic
+        signupForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(fAuth, email, password);
+                const user = userCredential.user;
+
+                // Save additional data to Firestore
+                await setDoc(doc(fDb, "users", user.uid), {
+                    uid: user.uid,
+                    displayName: name,
+                    email: email,
+                    createdAt: serverTimestamp()
+                });
+
+                alert('Account created successfully! 🎉');
+                toggleAuthModal(false);
+            } catch (error) {
+                alert(error.message);
+            }
+        };
+
+        // Login Logic
+        loginForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                await signInWithEmailAndPassword(fAuth, email, password);
+                alert('Welcome back! 🚀');
+                toggleAuthModal(false);
+            } catch (error) {
+                alert(error.message);
+            }
+        };
+
+        // Logout Logic
+        logoutBtn.onclick = async () => {
+            try {
+                await signOut(fAuth);
+                alert('Logged out successfully.');
+            } catch (error) {
+                alert(error.message);
+            }
+        };
+
+        // Auth State Listener
+        onAuthStateChanged(fAuth, (user) => {
+            if (user) {
+                authBtn.classList.add('hidden');
+                userProfile.classList.remove('hidden');
+                userNameDisplay.textContent = user.displayName || user.email.split('@')[0];
+            } else {
+                authBtn.classList.remove('hidden');
+                userProfile.classList.add('hidden');
+            }
+        });
+
+        // Contact Form -> Firestore
+        const contactForm = document.getElementById('contactForm');
+        contactForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const email = contactForm.querySelector('input[type="email"]').value;
+            const message = contactForm.querySelector('textarea').value;
+
+            try {
+                await addDoc(collection(fDb, "contacts"), {
+                    email: email,
+                    message: message,
+                    userId: fAuth.currentUser ? fAuth.currentUser.uid : 'anonymous',
+                    timestamp: serverTimestamp()
+                });
+
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#3b82f6', '#8b5cf6', '#ffffff']
+                });
+                alert('Message Sent & Saved! 🚀');
+                contactForm.reset();
+            } catch (error) {
+                alert('Error saving message: ' + error.message);
+            }
+        };
     </script>
 
 </body>
