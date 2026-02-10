@@ -50,19 +50,52 @@
     class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans transition-colors duration-300 overflow-x-hidden">
 
     <!-- Feature 16: Preloader -->
-    <div id="preloader">
-        <div class="loader-text tracking-[1em]">MAHAD</div>
-        <div class="loader-bar">
-            <div class="loader-progress"></div>
+    <div id="preloader"
+        style="position: fixed; inset: 0; background: #0f172a; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s;">
+        <div class="loader-text tracking-[1em]"
+            style="color: white; font-size: 1.5rem; font-weight: 800; text-transform: uppercase;">MAHAD</div>
+        <div class="loader-bar"
+            style="width: 200px; height: 2px; background: rgba(255, 255, 255, 0.1); position: relative; overflow: hidden;">
+            <div class="loader-progress"
+                style="position: absolute; left: -100%; width: 100%; height: 100%; background: #3b82f6; animation: progressMove 2s infinite;">
+            </div>
         </div>
     </div>
 
+    <script>
+        // Critical: Loader removal must always happen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('preloader');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    loader.style.visibility = 'hidden';
+                    setTimeout(() => {
+                        loader.remove();
+                        document.body.style.overflow = 'auto';
+                    }, 500);
+                }
+            }, 800);
+        });
+
+        // Emergency fallback (if load event hangs)
+        setTimeout(() => {
+            const loader = document.getElementById('preloader');
+            if (loader) {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                setTimeout(() => loader.remove(), 500);
+                document.body.style.overflow = 'auto';
+            }
+        }, 3000);
+    </script>
+
     <!-- Feature 15: Background Mesh -->
-    <div class="mesh-gradient text-reveal active"></div>
+    <div class="mesh-gradient"></div>
 
     <!-- Feature 11: Custom Cursor -->
-    <div class="cursor-dot hidden lg:block"></div>
-    <div class="cursor-outline hidden lg:block"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
     <!-- Feature 4: Scroll Progress -->
     <div id="scroll-progress"></div>
@@ -75,7 +108,7 @@
 
     <!-- Feature 8: WhatsApp -->
     <a href="https://wa.me/923142253977" target="_blank"
-        class="fixed bottom-6 right-6 z-[100] w-14 h-14 bg-gCreen-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-transform">
+        class="fixed bottom-6 right-6 z-[100] w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-transform">
         <i class="fab fa-whatsapp text-3xl"></i>
     </a>
 
@@ -184,8 +217,12 @@
         <div class="absolute inset-0 bg-white/0 dark:bg-slate-950/0 backdrop-blur-0 transition-all duration-300"
             id="nav-bg"></div>
         <div class="container mx-auto px-6 h-20 flex items-center justify-between relative z-10">
-            <a href="#" class="flex items-center">
-                <img src="assets/img/logo.png" alt="Logo" class="h-40 w-auto object-contain">
+            <a href="#" class="group flex items-center gap-1">
+                <span
+                    class="text-3xl font-black tracking-tighter text-slate-900 dark:text-white transition-all group-hover:text-primary">
+                    MAHAD<span class="text-primary ml-1">KHAN</span>
+                </span>
+                <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse mt-4"></span>
             </a>
 
             <ul class="hidden lg:flex items-center gap-6 text-sm font-medium">
@@ -201,6 +238,8 @@
                         class="px-5 py-2 bg-primary text-white rounded-xl font-bold hover:scale-105 transition-all">Login</button>
                 </li>
                 <li id="user-profile" class="hidden flex items-center gap-3">
+                    <img id="user-photo" src="" alt="User"
+                        class="w-10 h-10 rounded-full border-2 border-primary object-cover hidden">
                     <span id="user-name" class="text-xs font-bold text-slate-500"></span>
                     <button id="logout-btn"
                         class="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-all"><i
@@ -664,7 +703,7 @@
                     <!-- Brand Section -->
                     <div class="space-y-6">
                         <a href="#" class="flex items-center">
-                            <img src="assets/img/logo.png" alt="Logo" class="h-56 w-auto object-contain">
+                            <img src="assets/img/logo.png" alt="Logo" class="h-16 w-auto object-contain">
                         </a>
                         <p class="text-slate-500 text-sm leading-relaxed max-w-xs">
                             Crafting elite digital experiences with a focus on futuristic design and high-performance
@@ -770,7 +809,7 @@
     </main>
 
     <!-- Scripts -->
-    <script src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/main.js"></script>
 
 </body>
 

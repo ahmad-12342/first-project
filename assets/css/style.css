@@ -12,7 +12,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.8s ease, visibility 0.8s;
+    transition: opacity 0.8s ease, visibility 0.8s, transform 0.8s ease;
+}
+
+#preloader.loaded {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .loader-text {
@@ -83,10 +89,25 @@ body {
     z-index: -1;
     opacity: 0.15;
     background:
-        radial-gradient(circle at 0% 0%, #3b82f6 0%, transparent 50%),
-        radial-gradient(circle at 100% 100%, #8b5cf6 0%, transparent 50%);
+        radial-gradient(circle at 20% 30%, #3b82f6 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, #8b5cf6 0%, transparent 50%);
     filter: blur(80px);
-    animation: meshMove 20s infinite alternate;
+    animation: meshMove 15s infinite alternate ease-in-out;
+    pointer-events: none;
+}
+
+@keyframes meshMove {
+    0% {
+        transform: scale(1) translate(0, 0);
+    }
+
+    50% {
+        transform: scale(1.1) translate(5%, 5%);
+    }
+
+    100% {
+        transform: scale(1) translate(-5%, 2%);
+    }
 }
 
 /* Feature 18: Neon Glow Headings */
@@ -99,33 +120,50 @@ body {
 }
 
 /* Feature 11: Custom Magic Cursor */
+.cursor-dot,
+.cursor-outline {
+    display: none;
+}
+
+@media (min-width: 1024px) {
+
+    .cursor-dot,
+    .cursor-outline {
+        display: block;
+    }
+}
+
 .cursor-dot {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     background-color: #3b82f6;
     position: fixed;
+    top: 0;
+    left: 0;
     border-radius: 50%;
     pointer-events: none;
     z-index: 10000;
-    transition: transform 0.1s ease;
+    transition: opacity 0.3s ease;
 }
 
 .cursor-outline {
-    width: 40px;
-    height: 40px;
+    width: 34px;
+    height: 34px;
     border: 2px solid #3b82f6;
     position: fixed;
+    top: 0;
+    left: 0;
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
-    transition: transform 0.15s ease-out, width 0.3s, height 0.3s, border-color 0.3s;
+    transition: width 0.3s, height 0.3s, border-color 0.3s, background-color 0.3s, opacity 0.3s;
 }
 
 body.hover-active .cursor-outline {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     background: rgba(59, 130, 246, 0.1);
-    border-color: transparent;
+    border-color: rgba(59, 130, 246, 0.3);
 }
 
 /* Feature 4: Scroll Progress Bar */

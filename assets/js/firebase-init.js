@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, addDoc, collection, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDy32moDuvKHvYekhXoA_RZALEtA5kBLS0",
@@ -19,4 +19,21 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 // Export for use in other scripts
-window.firebaseApp = { auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, doc, setDoc, addDoc, collection, serverTimestamp };
+window.firebaseApp = { 
+    auth, 
+    db, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    onAuthStateChanged, 
+    signOut, 
+    updateProfile,
+    doc, 
+    setDoc, 
+    addDoc, 
+    getDoc,
+    collection, 
+    serverTimestamp 
+};
+
+// Signal that firebase is ready
+window.dispatchEvent(new Event('firebase-ready'));
